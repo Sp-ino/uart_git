@@ -20,29 +20,58 @@
 
 
 library IEEE;
-use IEEE.STD_LOGIC_1164.ALL;
-
--- Uncomment the following library declaration if using
+library xil_defaultlib;
+use IEEE.std_logic_1164.all;
 -- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
+use IEEE.numeric_std.all;
+use xil_defaultlib.uart_pkg.all;
 
 -- Uncomment the following library declaration if instantiating
 -- any Xilinx leaf cells in this code.
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
+
+
 entity uart_ip is
-    Port ( i_rx : in STD_LOGIC;
-           i_ck : in STD_LOGIC;
-           i_rst : in STD_LOGIC;
-           i_data_seen : in STD_LOGIC;
-           o_data_ready : out STD_LOGIC;
-           o_data_out : out STD_LOGIC_VECTOR (7 downto 0));
+    Port ( i_rx : in std_logic;
+           i_ck : in std_logic;
+           i_rst : in std_logic;
+           i_data_seen : in std_logic;
+           o_data_ready : out std_logic;
+           o_data_out : out std_logic_vector (out_len - 1 downto 0)
+    );
 end uart_ip;
+
 
 architecture Behavioral of uart_ip is
 
+    signal w_next_state: states;
+    signal r_present_state: states;
+    signal r_count_half: integer;
+    signal r_count_cy: integer;
+
 begin
+
+    compute_next_state: process(all)
+    begin
+
+        if rst = '0' then
+            w_next_state <= idle;
+        else
+            case r_present_state is
+            when idle =>
+                if i_rx = '1' then
+                    w_next_state <= idle;
+                else
+                    w_next_state <= count_cycles;
+            when
+                if count_half <= 20 then
+                    if r_count_cy = 3*bit_duration mod 2*bit_duration; 
+            end case;
+        end if;
+
+    end compute_next_state;
 
 
 end Behavioral;
