@@ -4,7 +4,7 @@
 -- 
 -- Create Date: 17.06.2022 15:51:38
 -- Design Name: 
--- Module Name: uart_ip - Behavioral
+-- Module Name: uart_rx_ip - Behavioral
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
@@ -33,7 +33,7 @@ use xil_defaultlib.uart_pkg.all;
 
 
 
-entity uart_ip is
+entity uart_rx_ip is
     Port ( i_rx : in std_logic;
            i_ck : in std_logic;
            i_rst : in std_logic;
@@ -41,10 +41,10 @@ entity uart_ip is
            o_data_ready : out std_logic;
            o_data_out : out std_logic_vector (out_len - 1 downto 0)
     );
-end uart_ip;
+end uart_rx_ip;
 
 
-architecture Behavioral of uart_ip is
+architecture Behavioral of uart_rx_ip is
 
     signal w_next_state: states;
     signal r_present_state: states;
