@@ -24,17 +24,13 @@ library xil_defaultlib;
 use IEEE.std_logic_1164.all;
 -- arithmetic functions with Signed or Unsigned values
 use IEEE.numeric_std.all;
+use IEEE.math_real.all;
 use xil_defaultlib.uart_pkg.all;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx leaf cells in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 
 
 entity uart_rx_ip is
-    Port ( i_rx : in std_logic;
+    port ( i_rx : in std_logic;
            i_ck : in std_logic;
            i_rst : in std_logic;
            i_data_seen : in std_logic;
@@ -46,8 +42,7 @@ end uart_rx_ip;
 
 architecture Behavioral of uart_rx_ip is
 
-    signal w_next_state: states;
-    signal r_present_state: states;
+    signal w_next_state, r_present_state: states;
     signal r_count_half_bit: integer;
     signal r_count_clock_cycles: integer;
 
@@ -56,34 +51,34 @@ begin
     compute_next_state: process(i_rst, r_present_state, i_rx, r_count_half_bit, i_data_seen)
     begin
 
-        if i_rst = '0' then
+        if i_rst = '1' then
             w_next_state <= idle;
         else
             case r_present_state is
             when idle =>
-                if i_rx = '1' then
-                    w_next_state <= idle;
-                else
+                if i_rx = '0' then
                     w_next_state <= count_cycles;
+                else
+                    w_next_state <= idle;
                 end if;
             when count_cycles =>
-                if r_count_half_bit <= 20 then
+                if r_count_half_bit <= frame_len - 1 then
                     w_next_state <= count_cycles;
                 else
-                    if i_rx = '1' then
-                        w_next_state <= wait_data_seen;
-                    else
+                    if i_rx = '0' then
                         w_next_state <= idle;
+                    else
+                        w_next_state <= wait_data_seen;
                     end if;
                 end if;
             when wait_data_seen =>
-                if i_data_seen = '1' then
-                    w_next_state <= idle;
-                else
+                if i_data_seen = '0' then
                     w_next_state <= wait_data_seen;
+                else
+                    w_next_state <= idle;
                 end if;
-            when others =>
-                w_next_state <= idle;
+           when others =>
+               w_next_state <= idle;
             end case;
         end if;
 
@@ -120,24 +115,26 @@ begin
                 end if;
             when count_cycles =>
                 r_count_clock_cycles <= r_count_clock_cycles + 1;
-                if r_count_half_bit <= 20 then
-                    if i_rx = '1' then
-                        o_data_ready <= '1';
+                if r_count_half_bit <= frame_len - 1 then
+                    if r_count_clock_cycles >= 3*bit_duration/2 and (r_count_clock_cycles - 3*bit_duration/2) rem bit_duration = 0 then
+                        if (r_count_clock_cycles - 3*bit_duration/2)/bit_duration < frame_len - 1 then
+                            o_data_out((r_count_clock_cycles - 3*bit_duration/2)/bit_duration) <= i_rx;
+                        end if;
+                        r_count_half_bit <= r_count_half_bit + 1;
                     end if;
                 else
-                    if r_count_clock_cycles mod 2*bit_duration = 3*bit_duration then
-                        o_data_out((r_count_clock_cycles - 3*bit_duration)/2) <= i_rx;
-                        r_count_half_bit <= r_count_half_bit + 1;
+                    if i_rx = '1' then
+                        o_data_ready <= '1';
                     end if;
                 end if;
             when wait_data_seen =>
                 if i_data_seen = '1' then
                     o_data_ready <= '0';
                 end if;
-            when others =>
-                r_count_half_bit <= 0;
-                r_count_clock_cycles <= 0;
-                o_data_ready <= '0';
+           when others =>
+               r_count_half_bit <= 0;
+               r_count_clock_cycles <= 0;
+               o_data_ready <= '0';
             end case;
         end if;
 
