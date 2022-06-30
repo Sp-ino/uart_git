@@ -29,12 +29,13 @@ use xil_defaultlib.uart_pkg.all;
 
 
 entity uart_rx_ip is
-    port ( i_rx : in std_logic;
-           i_ck : in std_logic;
-           i_rst : in std_logic;
-           i_data_seen : in std_logic;
-           o_data_ready : out std_logic;
-           o_data_out : out std_logic_vector (out_len - 1 downto 0)
+    port ( 
+        i_ck : in std_logic;
+        i_rx : in std_logic;
+        i_rst : in std_logic;
+        i_data_seen : in std_logic;
+        o_data_ready : out std_logic;
+        o_data_out : out std_logic_vector (out_len - 1 downto 0)
     );
 end uart_rx_ip;
 
