@@ -42,8 +42,9 @@ end uart_tb;
 architecture Behavioral of uart_tb is
 
     component uart_rx_ip
-        port ( i_rx : in std_logic;
+        port ( 
             i_ck : in std_logic;
+            i_rx : in std_logic;
             i_rst : in std_logic;
             i_data_seen : in std_logic;
             o_data_ready : out std_logic;
