@@ -54,9 +54,7 @@ architecture Behavioral of uart_tb is
     signal ck: std_logic;
     signal rst: std_logic;
     signal rx: std_logic;
-    signal data_seen: std_logic;
-    signal data_ready: std_logic;
-    signal data_out: std_logic_vector (out_len - 1 downto 0);
+    signal leds_out: std_logic_vector (out_len - 1 downto 0);
     constant tck: time := 10 ns;
 
 begin
@@ -66,7 +64,7 @@ begin
         i_receive => rx,
         i_clock => ck,
         i_reset => rst,
-        o_data_leds => data_out
+        o_data_leds => leds_out
     );
 
 
@@ -170,20 +168,5 @@ begin
         wait for bit_duration*tck;
 
     end process generate_test_sig;
-
-
-    assert_data_seen: process
-    begin
-    
-        -- wait until data is ready to be read from output port of receiver
-        -- then assert data_seen
-        data_seen <= '0';
-        wait until data_ready = '1';
-        wait for 3*tck/2;
-        data_seen <= '1';
-        wait for tck;
-        data_seen <= '0';
-
-    end process assert_data_seen;
 
 end Behavioral;
