@@ -56,6 +56,7 @@ architecture Behavioral of top_mod_tb is
     signal rx: std_logic;
     signal leds_out: std_logic_vector (out_len - 1 downto 0);
     constant tck: time := 10 ns;
+    constant tx_tck: time := 160 ns;
 
 begin
     
@@ -84,88 +85,88 @@ begin
 
         rx <= '1';
         rst <= '1';
-        wait for 3*tck/2;
+        wait for 3*tx_tck/2;
         rst <= '0';
 
         -- send start bit
-        wait for 2*tck; 
+        wait for 2*tx_tck; 
         rx <= '0';
 
         -- then send a "01010011" (83, or 0x53)
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
 
         -- send stop bit
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
 
         -- send a new start bit
-        wait for bit_duration*tck; 
+        wait for bit_duration*tx_tck; 
         rx <= '0';
 
         -- then send a "10011010" (154, or 0x9A)
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
 
         -- send stop bit
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
         
         -- send a new start bit
-        wait for bit_duration*tck; 
+        wait for bit_duration*tx_tck; 
         rx <= '0';
 
         -- then send a "00001010" (10, or 0x0A)
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '0';
 
         -- send stop bit
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
         rx <= '1';
         
-        wait for bit_duration*tck;
+        wait for bit_duration*tx_tck;
 
     end process generate_test_sig;
 
