@@ -50,7 +50,7 @@ architecture Behavioral of top_module is
     end component;
 
     component interf_ip
-        port(
+        port (
             i_ck: in std_logic;
             i_rst: in std_logic;
             i_data_ready: in std_logic;
@@ -60,6 +60,15 @@ architecture Behavioral of top_module is
         );
     end component;
 
+    component ckdiv_ip
+        port (
+            i_ckin : in std_logic;
+            i_rst : in std_logic;
+            o_ckout : out std_logic
+        );
+    end component;
+
+    signal scaled_ck: std_logic;
     signal data_ready: std_logic;
     signal data_seen: std_logic;
     signal data: std_logic_vector (out_len - 1 downto 0);
@@ -67,8 +76,8 @@ architecture Behavioral of top_module is
 begin
 
     uart: uart_rx_ip
-    port map(
-        i_ck => i_clock,
+    port map (
+        i_ck => scaled_ck,
         i_rst => i_reset,
         i_rx => i_receive,
         i_data_seen => data_seen,
@@ -78,13 +87,21 @@ begin
 
 
     interf: interf_ip
-    port map(
-        i_ck => i_clock,
+    port map (
+        i_ck => scaled_ck,
         i_rst => i_reset,
         i_data_ready => data_ready, 
         i_data => data,
         o_data_seen => data_seen,
         o_leds => o_data_leds
-    );    
+    );
+
+
+    ckvdiv: ckdiv_ip
+    port map (
+        i_ckin => i_clock,
+        i_rst => i_reset,
+        o_ckout => scaled_ck
+    );
 
 end Behavioral;
