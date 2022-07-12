@@ -10,6 +10,7 @@ package uart_pkg is
     constant clock_scaling_factor: integer := 16;
     constant baud_rate: integer := 38400; -- baud rate of the UART module
     constant bit_duration: integer := clock_frequ/(baud_rate*clock_scaling_factor); -- duration of a data bit in clock cycles
-    type states is (idle, count_cycles, wait_data_seen);
+    type uart_states_1 is (idle, count_cycles, wait_data_seen);
+    type uart_states_2 is (idle, wait_initial_time, count_cycles, wait_data_seen);
 
 end uart_pkg;

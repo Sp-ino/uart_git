@@ -38,7 +38,7 @@ end top_module;
 
 architecture Behavioral of top_module is
 
-    component uart_rx_ip
+    component uart_rx_2_ip
         port ( 
             i_rx : in std_logic;
             i_ck : in std_logic;
@@ -75,7 +75,7 @@ architecture Behavioral of top_module is
 
 begin
 
-    uart: uart_rx_ip
+    uart: uart_rx_2_ip
     port map (
         i_ck => scaled_ck,
         i_rst => i_reset,

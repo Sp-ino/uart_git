@@ -51,6 +51,7 @@ begin
 
         if i_rst = '1' then
             o_leds <= (others => '0');
+            o_data_seen <= '0';
             count <= 0;
         elsif rising_edge(i_ck) then
             if i_data_ready = '1' and count = 0 then
