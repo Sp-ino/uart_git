@@ -10,7 +10,7 @@
 -- Tool Versions: 
 -- Description: Synthesizable UART RX module
 -- 
--- Dependencies: 
+-- Dependencies: uart_pkg.vhd
 -- 
 -- Revision:
 -- Revision 0.01 - File Created

@@ -12,7 +12,7 @@
 --              that's more readable. It should be also more efficient
 --              resource-wise.
 -- 
--- Dependencies: 
+-- Dependencies: uart_pkg.vhd
 -- 
 -- Revision:
 -- Revision 0.01 - File Created

@@ -8,9 +8,9 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description: Top module that interconnects the basic IPs.
 -- 
--- Dependencies: 
+-- Dependencies: uart_pkg.vhd, uart_rx_2_ip.vhd, uart_tx_ip.vhd, interf_ip.vhd
 -- 
 -- Revision:
 -- Revision 0.01 - File Created

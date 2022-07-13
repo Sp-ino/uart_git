@@ -8,9 +8,10 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool Versions: 
--- Description: 
+-- Description: Interface module that allow the user to visualize what has been
+--              received via UART. 
 -- 
--- Dependencies: 
+-- Dependencies: uart_pkg.vhd
 -- 
 -- Revision:
 -- Revision 0.01 - File Created
